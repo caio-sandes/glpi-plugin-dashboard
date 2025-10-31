@@ -552,5 +552,23 @@ $(document).ready(function() {
 
 </script>
 
+<audio id="alert-audio" src="../sounds/alert.mp3" preload="auto"></audio>
+<script>
+function checarAlerta() {
+    fetch('../sounds/alert.flag?ts=' + Date.now())
+      .then(r => r.ok ? r.text() : Promise.reject())
+      .then(dado => {
+          if (dado.trim() !== "") {
+              let audio = document.getElementById('alert-audio');
+              if(audio) audio.play();
+              // Apaga a flag
+              fetch('limpar_alerta.php');
+          }
+      }).catch(()=>{});
+}
+setInterval(checarAlerta, 5000); // checa a cada 5 segundos
+</script>
+
+
 </body>
 </html>
